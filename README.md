@@ -1,4 +1,4 @@
-# Dining Philosophers Problem  [![license](https://img.shields.io/github/license/herrera-diego/dining-philosophers)](https://opensource.org/licenses/MIT) 
+# Dining Philosophers Problem  [![license](https://img.shields.io/github/license/herrera-diego/dining-philosophers)](./LICENSE) 
 
 Implementation on Dining Philosophers problem on C++
 
