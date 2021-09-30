@@ -10,3 +10,5 @@ A certain number of philosophers spend their lives alternating between thinking 
 
 This was originally formulated in 1965 by Edsger Dijkstra as a student exam exercise.
 
+## Solution
+
