@@ -1,2 +1,5 @@
-# ParallelPrograming
-Different examples on parallel computing
+# Dining Philosophers Problem
+
+Implementation on Dining Philosophers problem on C++
+
+
