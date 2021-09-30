@@ -1,5 +1,6 @@
 # Dining Philosophers Problem  
 
+
 ![Image](https://upload.wikimedia.org/wikipedia/commons/7/7b/An_illustration_of_the_dining_philosophers_problem.png)
 
 ## Problem Statement
