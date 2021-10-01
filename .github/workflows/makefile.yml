@@ -12,16 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repo
     - uses: actions/checkout@v2
     
-    - name: configure
-      run: ./configure
+    - name: Build
+      run: make all
+    
+    - name: Build tests
+      run: make tests 
+    
+    - name: Execute tests
+      run: ./bin/unittest
       
-    - name: Install dependencies
-      run: make
-      
-    - name: Run check
-      run: make check
-      
-    - name: Run distcheck
-      run: make distcheck
