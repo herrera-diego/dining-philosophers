@@ -15,9 +15,9 @@ jobs:
     - name: Checkout repo
     - uses: actions/checkout@v2    
     - name: Build
-      run: make all    
+    - run: make all    
     - name: Build tests
-      run: make tests     
+    - run: make tests     
     - name: Execute tests
-      run: ./bin/unittest
+    - run: ./bin/unittest
       
