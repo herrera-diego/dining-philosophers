@@ -12,7 +12,7 @@ namespace WaitingPhilosopher
     {    
         public:
             Philosopher();
-            bool checkNeighbor();
+            void think();
             void wait();
             void eat();
         protected:
