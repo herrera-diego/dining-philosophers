@@ -12,3 +12,11 @@ This was originally formulated in 1965 by Edsger Dijkstra as a student exam exer
 
 ## Solution
 
+### Waiting State
+ - The philosopher enters into a waiting state when neighbors are eating
+ - When its neighbors are done, go for the forks
+ - Its neighbors can't enter into the waiting state if there is a neighbor already waiting
+
+## Tests
+
+Tests are done using googletests
