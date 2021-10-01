@@ -7,11 +7,8 @@ Philosopher::Philosopher()
 
 }
 
-bool Philosopher::checkNeighbor()
-{
-    bool neighborBusy = true;
-
-    return neighborBusy;
+void Philosopher::think()
+{    
 }
 
 void Philosopher::wait()
