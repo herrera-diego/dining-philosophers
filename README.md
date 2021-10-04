@@ -1,4 +1,4 @@
-# Dining Philosophers Problem  [![license](https://img.shields.io/github/license/herrera-diego/dining-philosophers)](./LICENSE) [![Makefile CI](https://github.com/herrera-diego/dining-philosophers/actions/workflows/makefile.yml/badge.svg?branch=main)](https://github.com/herrera-diego/dining-philosophers/actions/workflows/makefile.yml)
+# Dining Philosophers Problem  [![license](https://img.shields.io/github/license/herrera-diego/dining-philosophers)](./LICENSE) [![Build and Tests](https://github.com/herrera-diego/dining-philosophers/actions/workflows/makefile.yml/badge.svg?branch=main)](https://github.com/herrera-diego/dining-philosophers/actions/workflows/makefile.yml) ![Code Grade](https://www.code-inspector.com/project/29294/status/svg)
 
 
 Implementation on Dining Philosophers problem on C++
