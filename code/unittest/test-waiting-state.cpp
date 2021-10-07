@@ -1,10 +1,43 @@
 #include "gtest/gtest.h"
 #include <string>
+
+#include <stdio.h>
+#include <unistd.h>
+
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/shm.h>
+
 #include "waiting-state/philosopher.h"
-#include "waiting-state/fork.h"
+#include "constants.h"
 
 using namespace WaitingPhilosopher;
 using namespace std;
+
+void deleteSemaphore(int id)
+{
+    key_t semkey = ftok(SEMKEYPATH,id);
+    if ( semkey == (key_t)-1 )
+    {
+        std::cerr << "ID: "<<id<<" ftok() for sem failed\n";
+        //return -1;
+    }
+
+    int semid = semget( semkey, NUMSEMS, 0666);
+    if ( semid == -1 )
+    {
+        std::cerr <<"ID: "<<id<<" semget() failed\n";
+        // return -1;
+    }
+
+    int rc = semctl( semid, 1, IPC_RMID );
+    if (rc==-1)
+    {
+        std::cerr <<"ID: "<<id<<" semctl() remove id failed\n";
+    }
+
+    
+}
 
 class WaitingPhilosopherTest : public testing::Test 
 {
@@ -33,10 +66,46 @@ class WaitingPhilosopherTest : public testing::Test
 
 TEST_F(WaitingPhilosopherTest, evenPhilosophers) 
 {
-    int numPh = 6;
-    Philosopher phs[numPh];
-    Fork forks[numPh*2 -1];
-    ASSERT_TRUE(forks[0].isBeingUsed());
+    int numPh = 3;
+    Philosopher* philosophers =  (Philosopher*)malloc(sizeof(Philosopher) * numPh);
+    pid_t pids[numPh];
+
+
+    for (int i = 0; i < numPh; i++) 
+    {
+        philosophers[i] = Philosopher(i, numPh);     
+    }
+
+
+    for (int i = 0; i < numPh; i++) 
+    {    
+        if ((pids[i] = fork()) < 0) 
+        {
+            perror("fork");
+            abort();
+        } 
+        else if (pids[i] == 0) 
+        {
+            philosophers[i].eat();
+            exit(0);
+        }
+    }
+
+    int status;
+    pid_t pid;
+    int n = numPh;
+    while (n > 0) 
+    {
+        pid = wait(&status);
+        printf("Child with PID %ld exited with status 0x%x.\n", (long)pid, status);
+        --n;  // TODO(pts): Remove pid from the pids array.
+    }
+
+    for (int i = 0; i < numPh; i++) 
+    {
+        deleteSemaphore(i);
+    }
+
 
 
 }
