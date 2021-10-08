@@ -53,7 +53,7 @@ Chopstick::Chopstick(int index)
 
 void Chopstick::putAway()
 {
-    int rc = semctl( m_semid, 1, IPC_RMID );
+    int rc = semctl( m_semid, 0, IPC_RMID );
     if (rc==-1)
     {        
         std::string error = "ID: " + std::to_string(m_index) + " semctl() remove id failed\n";

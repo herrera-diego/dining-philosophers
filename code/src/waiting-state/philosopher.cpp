@@ -65,7 +65,7 @@ void Philosopher::waitChopstick(int index)
 
 void Philosopher::pickupChopstick(int index)
 {
-    printf("ID: %i - pickup chopstick: %i\n",m_index,index);
+    printf("ID: %i - Pickup chopstick: %i\n",m_index,index);
     // std::cout<<"Me: "<<m_index<<"Waiting for chopstick: "<<index<<std::endl;
     semaphoreOperation(index, 1);
     
@@ -73,7 +73,7 @@ void Philosopher::pickupChopstick(int index)
 
 void Philosopher::putdownChopstick(int index)
 {
-    printf("ID: %i - putdown chopstick: %i\n",m_index,index);
+    printf("ID: %i - Putdown chopstick: %i\n",m_index,index);
     // std::cout<<"Me: "<<m_index<<"Waiting for chopstick: "<<index<<std::endl;
     semaphoreOperation(index, -1);
     
@@ -89,7 +89,7 @@ void Philosopher::semaphoreOperation(int index, short action)
 
     // Generate an IPC key for the semaphore set
     semKey = ftok(SEMKEYPATH,index);
-    if ( m_semkey == (key_t)-1 )
+    if ( semKey == (key_t)-1 )
     {
         std::string error = "ID: " + std::to_string(m_index) + " ftok() for sem failed\n";
         perror(error.c_str());

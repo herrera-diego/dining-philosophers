@@ -10,35 +10,20 @@
 
 #include "waiting-state/philosopher.h"
 #include "waiting-state/chopstick.h"
+#include "waiting-state/diningTable.h"
 #include "constants.h"
 
 using namespace WaitingPhilosopher;
 using namespace std;
 
-void deleteSemaphore(int id)
+
+union semun
 {
-    key_t semkey = ftok(SEMKEYPATH,id);
-    if ( semkey == (key_t)-1 )
-    {
-        std::cerr << "ID: "<<id<<" ftok() for sem failed\n";
-        //return -1;
-    }
-
-    int semid = semget( semkey, NUMSEMS, 0666);
-    if ( semid == -1 )
-    {
-        std::cerr <<"ID: "<<id<<" semget() failed\n";
-        // return -1;
-    }
-
-    int rc = semctl( semid, 1, IPC_RMID );
-    if (rc==-1)
-    {
-        std::cerr <<"ID: "<<id<<" semctl() remove id failed\n";
-    }
-
-    
-}
+  int val;                        /* value for SETVAL */
+  struct semid_ds *buf;                /* buffer for IPC_STAT & IPC_SET */
+  unsigned short int *array;        /* array for GETALL & SETALL */
+  struct seminfo *__buf;        /* buffer for IPC_INFO */
+};
 
 class WaitingPhilosopherTest : public testing::Test 
 {
@@ -64,49 +49,89 @@ class WaitingPhilosopherTest : public testing::Test
     }
 };
 
-
-TEST_F(WaitingPhilosopherTest, evenPhilosophers) 
+TEST_F(WaitingPhilosopherTest, chopstickCreation) 
 {
-    int numPh = 5;
-    Philosopher* philosophers =  (Philosopher*)malloc(sizeof(Philosopher) * numPh);
-    Chopstick* chopsticks =  (Chopstick*)malloc(sizeof(Chopstick) * numPh);;
-    pid_t pids[numPh];
+    int id = 17;
+    key_t semKey;
+    int semId;
+
+    semKey = ftok(SEMKEYPATH,id);
+    ASSERT_FALSE( semKey == (key_t)-1 );
+
+    semId = semget( semKey, NUMSEMS, 0666);
+    ASSERT_TRUE ( semId == -1 );
+
+    Chopstick testChopstick = Chopstick(id);
+
+    semKey = ftok(SEMKEYPATH,id);
+    ASSERT_FALSE( semKey == (key_t)-1 );
+
+    semId = semget( semKey, NUMSEMS, 0666);
+    ASSERT_FALSE ( semId == -1 );
+
+    testChopstick.putAway();
+
+    semKey = ftok(SEMKEYPATH,id);
+    ASSERT_FALSE( semKey == (key_t)-1 );
+
+    semId = semget( semKey, NUMSEMS, 0666);
+    ASSERT_TRUE ( semId == -1 );
+}
+
+TEST_F(WaitingPhilosopherTest, chopstickOperations) 
+{
+    int id = 17;
+    key_t semKey;
+    int semId;
+    struct sembuf sempar;
+    int semval;
+    union semun arg;
+
+    Chopstick testChopstick = Chopstick(id);
+    Philosopher aristotle = Philosopher(id, id+1);
+
+    semKey = ftok(SEMKEYPATH,id);
+    ASSERT_FALSE( semKey == (key_t)-1 );
+
+    semId = semget( semKey, NUMSEMS, 0666);
+    ASSERT_FALSE ( semId == -1 );
+
+    semval = semctl( semId, 0, GETVAL , arg );
+    ASSERT_EQ ( semval, 0 );
+
+    aristotle.pickupChopstick(id);
+
+    semval = semctl( semId, 0, GETVAL , arg );
+    ASSERT_EQ ( semval, 1 );
+
+    aristotle.pickupChopstick(id);
+
+    semval = semctl( semId, 0, GETVAL , arg );
+    ASSERT_EQ ( semval, 2 );
+
+    aristotle.putdownChopstick(id);
+
+    semval = semctl( semId, 0, GETVAL , arg );
+    ASSERT_EQ ( semval, 1 );
 
 
-    for (int i = 0; i < numPh; i++) 
-    {
-        philosophers[i] = Philosopher(i, numPh);  
-        chopsticks[i] = Chopstick(i);   
-    }
+    testChopstick.putAway();
+
+    semKey = ftok(SEMKEYPATH,id);
+    ASSERT_FALSE( semKey == (key_t)-1 );
+
+    semId = semget( semKey, NUMSEMS, 0666);
+    ASSERT_TRUE ( semId == -1 );
+}
 
 
-    for (int i = 0; i < numPh; i++) 
-    {    
-        if ((pids[i] = fork()) < 0) 
-        {
-            perror("fork");
-            abort();
-        } 
-        else if (pids[i] == 0) 
-        {
-            philosophers[i].dine();
-            exit(0);
-        }
-    }
+TEST_F(WaitingPhilosopherTest, DISABLED_evenPhilosophers) 
+{
+    DiningTable::startDinner(6);
+}
 
-    int status;
-    pid_t pid;
-    int n = numPh;
-    while (n > 0) 
-    {
-        pid = wait(&status);
-        printf("Child with PID %ld exited with status 0x%x.\n", (long)pid, status);
-        --n;  // TODO(pts): Remove pid from the pids array.
-    }
-
-    for (int i = 0; i < numPh; i++) 
-    {
-        chopsticks[i].putAway();
-    }
+TEST_F(WaitingPhilosopherTest, DISABLED_oddPhilosophers) 
+{
+    DiningTable::startDinner(5);
 }
 

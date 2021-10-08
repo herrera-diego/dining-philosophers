@@ -5,10 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "(gdb) Unittest Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/code/bin/unittest",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceFolder}/code/bin/unittest",
+            "program": "${workspaceFolder}/code/bin/dining-philosophers",
             "processId": "${command:pickProcess}",
             "MIMode": "gdb",
             "setupCommands": [
@@ -23,7 +42,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/code/bin/unittest",
+            "program": "${workspaceFolder}/code/bin/dining-philosophers",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
