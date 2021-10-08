@@ -58,7 +58,6 @@ $(OUTFILE): $(OBJFILES)
 	$(CXX) -o $(BINDIR)/$@ $^  $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 
 $(TESTFILE): $(TESTOBJFILES)
-	echo $(TESTOBJFILES)
 	mkdir -p $(BINDIR)
 	$(CXX) -o $(BINDIR)/$@ $^  $(CXXFLAGS) $(LDFLAGS) $(TSTLIBS)
 

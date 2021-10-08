@@ -11,12 +11,20 @@ namespace WaitingPhilosopher
     class Philosopher
     {    
         public:
-            Philosopher();
+            Philosopher(int index, int numPhilosophers);
+            void dine();
             void think();
-            void wait();
             void eat();
+            void waitChopstick(int index);
+            void pickupChopstick(int index);
+            void putdownChopstick(int index);
         protected:
-            bool waitingState = true;
+            int m_index;
+            int m_semid;
+            int m_numPhilosophers;
+            key_t m_semkey;  
+            void semaphoreOperation(int index, short action);
+    
     
         
     };
