@@ -8,9 +8,9 @@
 
 namespace WaitingPhilosopher
 {
-    #define SEMKEYPATH "/tmp/dinPh"          /* Path used on ftok for semget key  */        
+    #define SEMKEYPATH "/tmp"          /* Path used on ftok for semget key  */        
     #define SHMKEYPATH  SEMKEYPATH      /* Path used on ftok for shmget key  */
-    #define OUTPUTPATH "/tmp/"   /* Path used on ftok for semget key  */  
+    #define OUTPUTPATH "/tmp"   /* Path used on ftok for semget key  */  
               
     #define NUMSEMS 1
     #define SIZEOFSHMSEG 2048
