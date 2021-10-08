@@ -9,6 +9,7 @@
 #include <sys/shm.h>
 
 #include "waiting-state/philosopher.h"
+#include "waiting-state/chopstick.h"
 #include "constants.h"
 
 using namespace WaitingPhilosopher;
@@ -66,14 +67,16 @@ class WaitingPhilosopherTest : public testing::Test
 
 TEST_F(WaitingPhilosopherTest, evenPhilosophers) 
 {
-    int numPh = 3;
+    int numPh = 5;
     Philosopher* philosophers =  (Philosopher*)malloc(sizeof(Philosopher) * numPh);
+    Chopstick* chopsticks =  (Chopstick*)malloc(sizeof(Chopstick) * numPh);;
     pid_t pids[numPh];
 
 
     for (int i = 0; i < numPh; i++) 
     {
-        philosophers[i] = Philosopher(i, numPh);     
+        philosophers[i] = Philosopher(i, numPh);  
+        chopsticks[i] = Chopstick(i);   
     }
 
 
@@ -86,7 +89,7 @@ TEST_F(WaitingPhilosopherTest, evenPhilosophers)
         } 
         else if (pids[i] == 0) 
         {
-            philosophers[i].eat();
+            philosophers[i].dine();
             exit(0);
         }
     }
@@ -103,10 +106,7 @@ TEST_F(WaitingPhilosopherTest, evenPhilosophers)
 
     for (int i = 0; i < numPh; i++) 
     {
-        deleteSemaphore(i);
+        chopsticks[i].putAway();
     }
-
-
-
 }
 
