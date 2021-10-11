@@ -1,4 +1,4 @@
-#include "waiting-state/diningTable.h"
+#include "diningTable.h"
 
 #include <stdio.h>
 #include <stdlib.h>

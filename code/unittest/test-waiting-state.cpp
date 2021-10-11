@@ -8,9 +8,9 @@
 #include <sys/sem.h>
 #include <sys/shm.h>
 
-#include "waiting-state/philosopher.h"
-#include "waiting-state/chopstick.h"
-#include "waiting-state/diningTable.h"
+#include "philosopher.h"
+#include "chopstick.h"
+#include "diningTable.h"
 #include "constants.h"
 
 using namespace WaitingPhilosopher;
